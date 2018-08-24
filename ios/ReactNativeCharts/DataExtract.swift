@@ -74,5 +74,8 @@ open class DataExtract {
         fatalError("subclass should override this function")
     }
 
+  func createEntry(_ values: [JSON], index: Int, xAccessor: String, yAccessor: String) -> ChartDataEntry {
+    fatalError("subclass should override this function")
+  }
     
 }
