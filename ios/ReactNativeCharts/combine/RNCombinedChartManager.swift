@@ -1,49 +1,54 @@
-//  Created by xudong wu on 23/02/2017.
+//  Created by xudong wu on 24/02/2017.
 //  Copyright wuxudong
 //
 
-import UIKit
+import Charts
+import SwiftyJSON
 
-@objc(RNCombinedChartManager)
-@objcMembers
-open class RNCombinedChartManager: RCTViewManager, RNBarLineChartBaseManager {
-  var _bridge: RCTBridge? {get{return self.bridge}}
-  
-  override open func view() -> UIView! {
-    let ins = RNCombinedChartView()
-    return ins;
-  }
+class RNCombinedChartView: RNBarLineChartViewBase {
 
-  override open static func requiresMainQueueSetup() -> Bool {
-    return true;
-  }
-  
-  func moveViewToX(_ reactTag: NSNumber, xValue: NSNumber) {
-    (self as RNBarLineChartBaseManager)._moveViewToX(reactTag, xValue: xValue)
-  }
-  
-  func moveViewTo(_ reactTag: NSNumber, xValue: NSNumber, yValue: NSNumber, axisDependency: NSString) {
-    (self as RNBarLineChartBaseManager)._moveViewTo(reactTag, xValue: xValue, yValue: yValue, axisDependency: axisDependency)
-  }
-  
-  func moveViewToAnimated(_ reactTag: NSNumber, xValue: NSNumber, yValue: NSNumber, axisDependency: NSString, duration: NSNumber) {
-    (self as RNBarLineChartBaseManager)._moveViewToAnimated(reactTag, xValue: xValue, yValue: yValue, axisDependency: axisDependency, duration: duration)
-  }
-  
-  func centerViewTo(_ reactTag: NSNumber, xValue: NSNumber, yValue: NSNumber, axisDependency: NSString) {
-    (self as RNBarLineChartBaseManager)._centerViewTo(reactTag, xValue: xValue, yValue: yValue, axisDependency: axisDependency)
-  }
-  
-  func centerViewToAnimated(_ reactTag: NSNumber, xValue: NSNumber, yValue: NSNumber, axisDependency: NSString, duration: NSNumber) {
-    (self as RNBarLineChartBaseManager)._centerViewToAnimated(reactTag, xValue: xValue, yValue: yValue, axisDependency: axisDependency, duration: duration)
-  }
-  
-  func fitScreen(_ reactTag: NSNumber) {
-    (self as RNBarLineChartBaseManager)._fitScreen(reactTag)
-  }
-  
-  func highlights(_ reactTag: NSNumber, config: NSArray) {
-    (self as RNBarLineChartBaseManager)._highlights(reactTag, config: config)
-  }
+    let _chart: CombinedChartView;
+    let _dataExtract : CombinedDataExtract;
+
+    override var chart: CombinedChartView {
+        return _chart
+    }
+    
+    override var dataExtract: DataExtract {
+        return _dataExtract
+    }    
+
+    override init(frame: CoreGraphics.CGRect) {
+
+        self._chart = CombinedChartView(frame: frame)
+        self._dataExtract = CombinedDataExtract()
+
+        super.init(frame: frame)
+      
+
+        self._chart.delegate = self
+        self.addSubview(_chart)
+      
+      let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(chartViewLongPress(gesture:)))
+      gestureRecognizer.minimumPressDuration = 0.25;
+      
+      self.addGestureRecognizer(gestureRecognizer);
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setDrawValueAboveBar(_ enabled: Bool) {
+        _chart.drawValueAboveBarEnabled = enabled
+    }
+
+    func setDrawBarShadow(_ enabled: Bool) {
+        _chart.drawBarShadowEnabled = enabled
+    }
+
+    func setHighlightFullBarEnabled(_ enabled: Bool) {
+        _chart.highlightFullBarEnabled = enabled
+    }
 
 }
