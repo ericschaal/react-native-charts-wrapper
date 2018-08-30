@@ -460,9 +460,9 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
     } else {
       if gesture.state == .began {
         let point = gesture.location(in: self.chart)
-        let h = self.chart.getHighlightByTouchPoint(point);
-        guard let highlight = h else {return}
-        let entry = ChartDataEntry(x: highlight.x, y: highlight.y)
+        guard let chart = self.chart as? BarLineScatterCandleBubbleChartDataProvider else { return }
+        let highlight = chart.getTransformer(forAxis: .left).valueForTouchPoint(x: point.x, y: point.y)
+        let entry = ChartDataEntry(x: Double(highlight.x), y: Double(highlight.y))
         self.onLongSelect!(EntryToDictionaryUtils.entryToDictionary(entry))
       }
     }
