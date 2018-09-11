@@ -33,6 +33,10 @@ public abstract class DataExtract<D extends ChartData, U extends Entry> {
             ReadableArray values = dataSetReadableMap.getArray("values");
             String label = dataSetReadableMap.getString("label");
 
+            if (values.size() == 0) {
+                return null;
+            }
+
             String xAccessor = "";
             String yAccessor = "";
 

@@ -1,6 +1,7 @@
 package com.github.wuxudong.rncharts.charts;
 
 
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.data.Entry;
@@ -25,7 +26,25 @@ public class CombinedChartManager extends BarLineChartBaseManager<CombinedChart,
     }
 
     @Override
+    public void setData(CombinedChart chart, ReadableMap propMap) {
+        super.setData(chart, propMap);
+        float chartRange = chart.getXChartMax() - chart.getXChartMin();
+        chart.setVisibleXRangeMinimum(Math.min(chartRange, 600));
+        chart.setVisibleXRangeMaximum(12*3600);
+    }
+
+    @Override
     DataExtract getDataExtract() {
         return new CombinedDataExtract();
+    }
+
+
+
+
+    @Override
+    protected void onAfterUpdateTransaction(CombinedChart chart) {
+        super.onAfterUpdateTransaction(chart);
+        float chartRange = chart.getXChartMax() - chart.getXChartMin();
+        System.out.println("Chart Range: " + chartRange);
     }
 }

@@ -72,42 +72,49 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
     }
 
     private void updateVisibleRange(BarLineChartBase chart, ReadableMap propMap) {
-        if (BridgeUtils.validate(propMap, ReadableType.Map, "x")) {
-            ReadableMap x = propMap.getMap("x");
-            if (BridgeUtils.validate(x, ReadableType.Number, "min")) {
-                chart.setVisibleXRangeMinimum((float) x.getDouble("min"));
-            }
 
-            if (BridgeUtils.validate(x, ReadableType.Number, "max")) {
-                chart.setVisibleXRangeMaximum((float) x.getDouble("max"));
-            }
-        }
 
-        if (BridgeUtils.validate(propMap, ReadableType.Map, "y")) {
-            ReadableMap y = propMap.getMap("y");
+//        float chartRange = chart.getXRange();
+//        System.out.println("Chart Range: " + chartRange);
+//        float minRange = Math.min(60, 10*60);
+//        chart.setVisibleXRange(minRange, 12*3600);
 
-            if (BridgeUtils.validate(y, ReadableType.Map, "left")) {
-                ReadableMap left = y.getMap("left");
-                if (BridgeUtils.validate(left, ReadableType.Number, "min")) {
-                    chart.setVisibleYRangeMinimum((float) left.getDouble("min"), YAxis.AxisDependency.LEFT);
-                }
-
-                if (BridgeUtils.validate(left, ReadableType.Number, "max")) {
-                    chart.setVisibleYRangeMaximum((float) left.getDouble("max"), YAxis.AxisDependency.LEFT);
-                }
-            }
-
-            if (BridgeUtils.validate(y, ReadableType.Map, "right")) {
-                ReadableMap right = y.getMap("right");
-                if (BridgeUtils.validate(right, ReadableType.Number, "min")) {
-                    chart.setVisibleYRangeMinimum((float) right.getDouble("min"), YAxis.AxisDependency.RIGHT);
-                }
-
-                if (BridgeUtils.validate(right, ReadableType.Number, "max")) {
-                    chart.setVisibleYRangeMaximum((float) right.getDouble("max"), YAxis.AxisDependency.RIGHT);
-                }
-            }
-        }
+//        if (BridgeUtils.validate(propMap, ReadableType.Map, "x")) {
+//            ReadableMap x = propMap.getMap("x");
+//            if (BridgeUtils.validate(x, ReadableType.Number, "min")) {
+//                chart.setVisibleXRangeMinimum((float) x.getDouble("min"));
+//            }
+//
+//            if (BridgeUtils.validate(x, ReadableType.Number, "max")) {
+//                chart.setVisibleXRangeMaximum((float) x.getDouble("max"));
+//            }
+//        }
+//
+//        if (BridgeUtils.validate(propMap, ReadableType.Map, "y")) {
+//            ReadableMap y = propMap.getMap("y");
+//
+//            if (BridgeUtils.validate(y, ReadableType.Map, "left")) {
+//                ReadableMap left = y.getMap("left");
+//                if (BridgeUtils.validate(left, ReadableType.Number, "min")) {
+//                    chart.setVisibleYRangeMinimum((float) left.getDouble("min"), YAxis.AxisDependency.LEFT);
+//                }
+//
+//                if (BridgeUtils.validate(left, ReadableType.Number, "max")) {
+//                    chart.setVisibleYRangeMaximum((float) left.getDouble("max"), YAxis.AxisDependency.LEFT);
+//                }
+//            }
+//
+//            if (BridgeUtils.validate(y, ReadableType.Map, "right")) {
+//                ReadableMap right = y.getMap("right");
+//                if (BridgeUtils.validate(right, ReadableType.Number, "min")) {
+//                    chart.setVisibleYRangeMinimum((float) right.getDouble("min"), YAxis.AxisDependency.RIGHT);
+//                }
+//
+//                if (BridgeUtils.validate(right, ReadableType.Number, "max")) {
+//                    chart.setVisibleYRangeMaximum((float) right.getDouble("max"), YAxis.AxisDependency.RIGHT);
+//                }
+//            }
+//        }
     }
 
     @ReactProp(name = "autoScaleMinMaxEnabled")
@@ -273,10 +280,6 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
     @Override
     protected void onAfterUpdateTransaction(T chart) {
         super.onAfterUpdateTransaction(chart);
-
-        if (savedVisibleRange != null) {
-            updateVisibleRange(chart, savedVisibleRange);
-            savedVisibleRange = null;
-        }
+        updateVisibleRange(chart, savedVisibleRange);
     }
 }

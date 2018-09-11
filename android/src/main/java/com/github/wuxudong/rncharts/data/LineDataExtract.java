@@ -110,7 +110,6 @@ public class LineDataExtract extends DataExtract<LineData, Entry> {
     @Override
     Entry createEntry(ReadableArray values, int index, String xAccessor, String yAccessor) {
         float x = index;
-
         Entry entry;
         if (ReadableType.Map.equals(values.getType(index))) {
             ReadableMap map = values.getMap(index);

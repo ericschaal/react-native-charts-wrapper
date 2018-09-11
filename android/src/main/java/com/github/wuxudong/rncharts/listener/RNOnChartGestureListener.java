@@ -23,6 +23,7 @@ import java.lang.ref.WeakReference;
 public class RNOnChartGestureListener implements OnChartGestureListener {
 
     private WeakReference<Chart> mWeakChart;
+    private Boolean longPressLocked = false;
 
     public RNOnChartGestureListener(Chart chart) {
         mWeakChart = new WeakReference<>(chart);
@@ -34,10 +35,14 @@ public class RNOnChartGestureListener implements OnChartGestureListener {
 
     @Override
     public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
+        this.longPressLocked = false;
     }
 
     @Override
     public void onChartLongPressed(MotionEvent me) {
+        if (!this.longPressLocked) {
+            sendEvent("longPress", me);
+        }
     }
 
     @Override
@@ -55,12 +60,19 @@ public class RNOnChartGestureListener implements OnChartGestureListener {
     @Override
     public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
         sendEvent("chartScaled");
+        this.longPressLocked = true;
     }
 
     @Override
     public void onChartTranslate(MotionEvent me, float dX, float dY) {
-        sendEvent("chartTranslated");
+            sendEvent("chartTranslated");
+        if (dX > 1) {
+            this.longPressLocked = true;
+        }
     }
+
+
+
 
     private void sendEvent(String action) {
         if (mWeakChart != null) {
@@ -76,6 +88,34 @@ public class RNOnChartGestureListener implements OnChartGestureListener {
         }
     }
 
+    private void sendEvent(String action, MotionEvent me) {
+        if (mWeakChart != null) {
+            Chart chart = mWeakChart.get();
+
+            WritableMap event = getEvent(action, me, chart);
+
+            ReactContext reactContext = (ReactContext) chart.getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                    chart.getId(),
+                    "topChange",
+                    event);
+        }
+    }
+
+
+    private WritableMap getEvent(String action, MotionEvent me, Chart chart) {
+
+        WritableMap event = getEvent(action, chart);
+
+
+        MPPointD touched = ((BarLineChartBase) chart).getValuesByTouchPoint(me.getX(), me.getY(), YAxis.AxisDependency.LEFT);
+        event.putDouble("x", touched.x);
+        event.putDouble("y", touched.y);
+
+        return event;
+    }
+
+
     @NonNull
     private WritableMap getEvent(String action, Chart chart) {
         WritableMap event = Arguments.createMap();
@@ -86,6 +126,7 @@ public class RNOnChartGestureListener implements OnChartGestureListener {
             ViewPortHandler viewPortHandler = chart.getViewPortHandler();
             event.putDouble("scaleX", chart.getScaleX());
             event.putDouble("scaleY", chart.getScaleY());
+
 
             MPPointD center = ((BarLineChartBase) chart).getValuesByTouchPoint(viewPortHandler.getContentCenter().getX(), viewPortHandler.getContentCenter().getY(), YAxis.AxisDependency.LEFT);
             event.putDouble("centerX", center.x);

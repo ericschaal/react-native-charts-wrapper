@@ -1,7 +1,9 @@
 package com.github.wuxudong.rncharts.charts;
 
 
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.wuxudong.rncharts.data.DataExtract;
@@ -23,6 +25,8 @@ public class LineChartManager extends BarLineChartBaseManager<LineChart, Entry> 
         lineChart.setOnChartGestureListener(new RNOnChartGestureListener(lineChart));
         return lineChart;
     }
+
+
 
     @Override
     DataExtract getDataExtract() {
