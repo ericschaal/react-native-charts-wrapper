@@ -25,6 +25,13 @@ extension RNBarLineChartBaseManager {
     }
   }
   
+  func _zoomViewXAnimated(_ reactTag: NSNumber, scaleX: NSNumber, axisDependency: NSString) {
+    _bridge?.uiManager.addUIBlock { (uiManager: RCTUIManager?, viewRegistry:[NSNumber : UIView]?) in
+      let view: RNBarLineChartViewBase = viewRegistry![reactTag] as! RNBarLineChartViewBase;
+      (view.chart as! BarLineChartViewBase).zoom(scaleX: CGFloat(truncating: scaleX), scaleY: 1.0, xValue: Double(view.chart.center.x), yValue: Double(view.chart.center.y), axis: BridgeUtils.parseAxisDependency(axisDependency as String))
+    }
+  }
+  
   func _moveViewToAnimated(_ reactTag: NSNumber, xValue: NSNumber, yValue: NSNumber, axisDependency: NSString, duration: NSNumber) {
     _bridge?.uiManager.addUIBlock { (uiManager: RCTUIManager?, viewRegistry:[NSNumber : UIView]?) in
       let view: RNBarLineChartViewBase = viewRegistry![reactTag] as! RNBarLineChartViewBase;
