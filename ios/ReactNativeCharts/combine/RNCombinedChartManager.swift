@@ -30,6 +30,10 @@ open class RNCombinedChartManager: RCTViewManager, RNBarLineChartBaseManager {
     (self as RNBarLineChartBaseManager)._moveViewToAnimated(reactTag, xValue: xValue, yValue: yValue, axisDependency: axisDependency, duration: duration)
   }
   
+  func zoomViewXAnimated(_ reactTag: NSNumber, scaleX: NSNumber, axisDependency: NSString) {
+    (self as RNBarLineChartBaseManager)._zoomViewXAnimated(reactTag, scaleX: scaleX, axisDependency: axisDependency)
+  }
+  
   func centerViewTo(_ reactTag: NSNumber, xValue: NSNumber, yValue: NSNumber, axisDependency: NSString) {
     (self as RNBarLineChartBaseManager)._centerViewTo(reactTag, xValue: xValue, yValue: yValue, axisDependency: axisDependency)
   }
