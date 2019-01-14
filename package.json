@@ -21,16 +21,5 @@
   "dependencies": {
     "prop-types": "^15.5.10",
     "react": "16.1.1"
-  },
-  "bugs": {
-    "url": "https://github.com/wuxudong/react-native-charts-wrapper/issues"
-  },
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

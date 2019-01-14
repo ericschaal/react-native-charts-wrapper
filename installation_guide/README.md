@@ -16,6 +16,10 @@ react-native-cli: 2.0.1
 $ pod --version
 1.5.3
 
+Xcode 10.0
+
+swift 4.1/4.2
+
 ```
 
 
@@ -28,6 +32,7 @@ $ pod --version
 -  cd demo
  
 -  yarn add react-native-charts-wrapper
+-  yarn add @babel/runtime
  
 -  update your App.js 
 
@@ -185,6 +190,9 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-4.4-all.zip
 Add following code to MainApplication.java for RN >= 0.54, check [#229](https://github.com/wuxudong/react-native-charts-wrapper/issues/229) and the code in android example.
 
 ```java
+  import com.facebook.react.bridge.ReadableNativeArray;
+  import com.facebook.react.bridge.ReadableNativeMap;
+  
   @Override
   public void onCreate() {
     super.onCreate();
@@ -251,13 +259,18 @@ react-native run-android, that is it.
 		    pod 'RNCharts', :path => '../node_modules/react-native-charts-wrapper'
 		end
 			
-		post_install do |installer|
-		  installer.pods_project.targets.each do |target|
-		    target.build_configurations.each do |config|
-		      config.build_settings['SWIFT_VERSION'] = '4.1'
-		    end
-		  end
-		end
+		swift4 = ['Charts']
+
+        post_install do |installer|
+          installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |config|
+              if swift4.include?(target.name)
+                config.build_settings['SWIFT_VERSION'] = '4.1'
+              end
+            end
+          end
+        end
+
 		```
 
 		
@@ -288,6 +301,13 @@ react-native run-android, that is it.
 		
 		create a group under your project top level and add files under directory node_modules/react-native-charts-wrapper/ios/ReactNativeCharts
 		
+		Groups are required, not folder reference!
+		The folder color should be yellow! not blue!
+		
+		![](https://raw.githubusercontent.com/wuxudong/react-native-charts-wrapper/master/installation_guide/add_source_files.png)
+		
+		
+		
 		* Add Bridge File
 		
 		When you add the files XCode should prompt you to create a bridging header if you haven't done so already, or you can create empty swift file to trigger xcode prompt. Create the bridging header and import the RCTViewManager.h. It should look something like this.
@@ -302,7 +322,7 @@ react-native run-android, that is it.
 		#import "React/RCTEventEmitter.h"
 		#import "React/RCTFont.h"
 		```
-		
+				
 		* Add Charts and SwiftyJSON, you can do it by cocoapods or link them manually.
 			* use cocoapods
 			
@@ -314,13 +334,18 @@ react-native run-android, that is it.
 			  pod 'SwiftyJSON', '4.0.0'      
 			  pod 'Charts', '3.1.1'         
 			end
-			post_install do |installer|
-			  installer.pods_project.targets.each do |target|
-			    target.build_configurations.each do |config|
-			      config.build_settings['SWIFT_VERSION'] = '4.0'
-			    end
-			  end
-			end 
+
+			swift4 = ['Charts']
+
+            post_install do |installer|
+              installer.pods_project.targets.each do |target|
+                target.build_configurations.each do |config|
+                  if swift4.include?(target.name)
+                    config.build_settings['SWIFT_VERSION'] = '4.1'
+                  end
+                end
+              end
+            end
 			```
 			
 			* manual install
@@ -333,7 +358,7 @@ react-native run-android, that is it.
 
 		* update project setting
 		
-     	  update `Swift Language Version` in `Build Settings` to 4.1
+     	  update `Swift Language Version` in `Build Settings` to 4.1/4.2
 		
 		* run it from XCode or run `react-native run-ios`, that is it.
 

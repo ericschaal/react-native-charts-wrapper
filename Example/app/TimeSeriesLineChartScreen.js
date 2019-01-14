@@ -42,18 +42,13 @@ class TimeSeriesLineChartScreen extends React.Component {
       },
 
       selectedEntry: "",
-      yAxis: {left:{axisMaximum:12000}}
+      yAxis: {left:{axisMaximum:12000}, right: {enabled: false}}
     }
 
   }
 
   componentDidMount() {
     const size = 80;
-
-    let _this =  this
-    setTimeout( function() {
-      _this.setState({...this.state, yAxis:{left:{axisMaximum:6000}}})
-    }, 5000)    
 
     this.setState(
       update(this.state, {
@@ -153,22 +148,9 @@ class TimeSeriesLineChartScreen extends React.Component {
             borderWidth={1}
             drawBorders={true}
 
-            touchEnabled={true}
-            dragEnabled={true}
-            scaleEnabled={true}
-            scaleXEnabled={true}
-            scaleYEnabled={true}
-            pinchZoom={true}
-            doubleTapToZoomEnabled={false}
-
-            dragDecelerationEnabled={true}
-            dragDecelerationFrictionCoef={0.99}
             yAxis={this.state.yAxis}
 
-            keepPositionOnRotation={false}
-
-            xAxis={{valueFormatter: 'percent', position:'BOTTOM'}}
-
+            
             onSelect={this.handleSelect.bind(this)}
             onChange={(event) => console.log(event.nativeEvent)}
 

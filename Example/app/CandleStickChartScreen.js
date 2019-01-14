@@ -84,7 +84,7 @@ class CandleStickChartScreen extends React.Component {
             shadowWidth: 1,
             shadowColorSameAsCandle: true,
             increasingColor: processColor('#71BD6A'),
-            increasingPaintStyle: 'fill',
+            increasingPaintStyle: 'FILL',
             decreasingColor: processColor('#D14B5A')
           },
           xAxis: {},
@@ -110,6 +110,7 @@ class CandleStickChartScreen extends React.Component {
               drawLabels: true,
               drawGridLines: true,
               position: 'BOTTOM',
+              yOffset: 5,
 
               limitLines: _.times(this.state.data.dataSets[0].values.length / 5, (i) => {
                 return {

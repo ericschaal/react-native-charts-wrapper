@@ -28,6 +28,9 @@ import StackedBarChartScreen from './StackedBarChartScreen';
 import ZeroLineChartScreen from './ZeroLineChartScreen';
 import LiveUpdateChartScreen from './LiveUpdateChartScreen';
 import GroupBarChartScreen from './GroupBarChartScreen';
+import InfiniteScrollLineChartScreen from './InfiniteScrollLineChartScreen';
+import LinkageChartScreen from './LinkageChartScreen';
+import StockChartScreen from './StockChartScreen';
 
 
 const styles = StyleSheet.create({
@@ -102,6 +105,11 @@ var ExampleRoutes = {
     screen: CandleStickChartScreen,
     description: 'Displays a CandleStickChart',
   },
+  StockChartScreen: {
+    name: 'StockChartScreen',
+    screen: StockChartScreen,
+    description: 'Displays a StockChartScreen',
+  },
   TimeSeriesLineChartScreen: {
     name: 'TimeSeriesLineChart',
     screen: TimeSeriesLineChartScreen,
@@ -146,6 +154,16 @@ var ExampleRoutes = {
     name: 'MovingWindowChartScreen',
     screen: MovingWindowChartScreen,
     description: 'Displays a MovingWindowChartScreen',
+  },
+  InfiniteScrollLineChartScreen: {
+    name: 'InfiniteScrollLineChartScreen',
+    screen: InfiniteScrollLineChartScreen,
+    description: 'Displays a InfiniteScrollChartScreen',
+  },
+  LinkageChartScreen: {
+    name: 'LinkageChartScreen',
+    screen: LinkageChartScreen,
+    description: 'Displays a LinkageChartScreen',
   },
 };
 

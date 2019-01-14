@@ -18,6 +18,14 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
     open var onLongSelect: RCTBubblingEventBlock?
     open var onChange:RCTBubblingEventBlock?
     
+    private var group: String?
+    
+    private  var identifier: String?
+    
+    private  var syncX = true
+    
+    private  var syncY = false
+    
     override open func reactSetFrame(_ frame: CGRect)
     {
         super.reactSetFrame(frame);
@@ -251,6 +259,10 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
         if json["position"].string != nil {
             xAxis.labelPosition = BridgeUtils.parseXAxisLabelPosition(json["position"].stringValue)
         }
+
+        if json["yOffset"].number != nil {
+            xAxis.yOffset = CGFloat(truncating: json["yOffset"].numberValue)
+        }
     }
     
     func setCommonAxisConfig(_ axis: AxisBase, config: JSON) {
@@ -326,6 +338,7 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
         if config["limitLines"].array != nil {
             let limitLinesConfig = config["limitLines"].arrayValue
             
+            axis.removeAllLimitLines()
             for limitLineConfig in limitLinesConfig {
                 
                 if limitLineConfig["limit"].double != nil {
@@ -415,7 +428,9 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
                 axis.valueFormatter = DefaultAxisValueFormatter(formatter: percentFormatter);
             } else if "date" == valueFormatter.stringValue {
               let valueFormatterPattern = config["valueFormatterPattern"].stringValue;
-              axis.valueFormatter = ChartDateFormatter(pattern: valueFormatterPattern);
+              let since = config["since"].double != nil ? config["since"].doubleValue : 0
+              let timeUnit = config["timeUnit"].string != nil ? config["timeUnit"].stringValue : "MILLISECONDS"
+              axis.valueFormatter = CustomChartDateFormatter(pattern: valueFormatterPattern, since: since, timeUnit: timeUnit);
             } else {
               let customFormatter = NumberFormatter()
               customFormatter.positiveFormat = valueFormatter.stringValue
@@ -527,6 +542,10 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
                 dict["bottom"] = leftBottom.y
                 dict["right"] = rightTop.x
                 dict["top"] = rightTop.y
+                
+                if self.group != nil && self.identifier != nil {
+                    ChartGroupHolder.sync(group: self.group!, identifier: self.identifier!, scaleX: barLineChart.scaleX, scaleY: barLineChart.scaleY, centerX: center.x, centerY: center.y, performImmediately: true)
+                }
             }
         }
         
@@ -537,5 +556,34 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
         }
     }
     
+    func setGroup(_ group: String) {
+        self.group = group
+    }
+    
+    func setIdentifier(_ identifier: String) {
+        self.identifier = identifier
+    }
+    
+    func setSyncX(_ syncX: Bool) {
+        self.syncX = syncX
+    }
+    
+    func setSyncY(_ syncY: Bool) {
+        self.syncY = syncY
+    }
+
+    func onAfterDataSetChanged() {
+    }
+    
+    override open func didSetProps(_ changedProps: [String]!) {
+        super.didSetProps(changedProps)        
+        chart.notifyDataSetChanged()
+        onAfterDataSetChanged()
+        
+        if self.group != nil && self.identifier != nil && chart is BarLineChartViewBase {
+            ChartGroupHolder.addChart(group: self.group!, identifier: self.identifier!, chart: chart as! BarLineChartViewBase, syncX: syncX, syncY: syncY);
+        }
+        
+    }
     
 }
