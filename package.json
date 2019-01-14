@@ -2,7 +2,7 @@
   "name": "@my01/react-native-charts-wrapper",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wuxudong/react-native-charts-wrapper.git"
+    "url": "git+https://github.com/ericschaal/react-native-charts-wrapper.git"
   },
   "version": "0.5.3",
   "description": "A react-native charts support both android and ios.",
