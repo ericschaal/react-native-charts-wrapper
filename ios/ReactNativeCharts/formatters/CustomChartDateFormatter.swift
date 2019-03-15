@@ -21,7 +21,9 @@ open class CustomChartDateFormatter: NSObject, IValueFormatter, IAxisValueFormat
     }
     
     public init(pattern: String?, since: Double, timeUnit: String?) {
-        self.dateFormatter.dateFormat = pattern;
+        if let p = pattern {
+            self.dateFormatter.setLocalizedDateFormatFromTemplate(p)
+        }
         self.since = since
         self.timeUnit = timeUnit
     }
