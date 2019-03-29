@@ -292,7 +292,11 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
                 "moveViewToAnimated", MOVE_VIEW_TO_ANIMATED,
                 "fitScreen", FIT_SCREEN,
                 "highlights", HIGHLIGHTS,
-                "setDataAndLockIndex", SET_DATA_AND_LOCK_INDEX);
+                "setDataAndLockIndex", SET_DATA_AND_LOCK_INDEX,
+                "zoomViewEnd", ZOOM_END
+        );
+
+        map.put("centerViewTo", CENTER_VIEW_TO);
 
         if (commandsMap != null) {
             map.putAll(commandsMap);
@@ -334,6 +338,10 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
             case SET_DATA_AND_LOCK_INDEX:
                 setDataAndLockIndex(root, args.getMap(0));
                 return;
+
+            case ZOOM_END:
+                float scaleAmount = (float) args.getDouble(0);
+                root.zoom(scaleAmount, 0, root.getData().getXMax(), root.getCenter().y, args.getString(1).equalsIgnoreCase("right") ? YAxis.AxisDependency.RIGHT : YAxis.AxisDependency.LEFT);
         }
 
         super.receiveCommand(root, commandId, args);

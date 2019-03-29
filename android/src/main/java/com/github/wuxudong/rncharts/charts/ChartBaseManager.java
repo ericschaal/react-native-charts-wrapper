@@ -8,7 +8,8 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.github.mikephil.charting.animation.Easing.EasingOption;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.animation.Easing.EasingFunction;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -44,6 +45,7 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
     protected static final int HIGHLIGHTS = 8;
 
     protected static final int SET_DATA_AND_LOCK_INDEX = 9;
+    protected static final int ZOOM_END = 10;
 
     abstract DataExtract getDataExtract();
 
@@ -210,8 +212,8 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
     public void setAnimation(Chart chart, ReadableMap propMap) {
         Integer durationX = null;
         Integer durationY = null;
-        EasingOption easingX = EasingOption.Linear;
-        EasingOption easingY = EasingOption.Linear;
+        EasingFunction easingX = Easing.Linear;
+        EasingFunction easingY = Easing.Linear;
 
         if (BridgeUtils.validate(propMap, ReadableType.Number, "durationX")) {
             durationX = propMap.getInt("durationX");
@@ -220,10 +222,10 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
             durationY = propMap.getInt("durationY");
         }
         if (BridgeUtils.validate(propMap, ReadableType.String, "easingX")) {
-            easingX = EasingOption.valueOf(propMap.getString("easingX"));
+            easingX = Easing.Linear; //EasingOption.valueOf(propMap.getString("easingX"));
         }
         if (BridgeUtils.validate(propMap, ReadableType.String, "easingY")) {
-            easingY = EasingOption.valueOf(propMap.getString("easingY"));
+            easingY = Easing.Linear; //EasingOption.valueOf(propMap.getString("easingY"));
         }
 
         if (durationX != null && durationY != null) {
