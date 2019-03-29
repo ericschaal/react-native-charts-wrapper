@@ -105,6 +105,15 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
 
     }
 
+    @ReactProp(name= "dragOffset")
+    public void setDragOffset(T chart, boolean dragOffset) {
+        if (dragOffset) {
+            chart.setDragOffsetX(Utils.convertPixelsToDp(chart.getViewPortHandler().getChartWidth()) / 2);
+        } else {
+            chart.setDragOffsetX(0);
+        }
+    }
+
     private void updateVisibleRange(BarLineChartBase chart, ReadableMap propMap) {
         if (BridgeUtils.validate(propMap, ReadableType.Map, "x")) {
             ReadableMap x = propMap.getMap("x");
