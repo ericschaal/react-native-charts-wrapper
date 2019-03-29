@@ -28,7 +28,7 @@ extension RNBarLineChartBaseManager {
   func _zoomViewEnd(_ reactTag: NSNumber, scaleX: NSNumber, axisDependency: NSString) {
     _bridge?.uiManager.addUIBlock { (uiManager: RCTUIManager?, viewRegistry:[NSNumber : UIView]?) in
       let view: RNBarLineChartViewBase = viewRegistry![reactTag] as! RNBarLineChartViewBase;
-      (view.chart as! BarLineChartViewBase).zoom(scaleX: scaleX as! CGFloat, scaleY: CGFloat(1.0), xValue: view.chart.data!.xMax, yValue: Double(view.chart.center.y), axis: BridgeUtils.parseAxisDependency(axisDependency as String))
+      (view.chart as! BarLineChartViewBase).zoomViewEnd(scaleX: scaleX as! CGFloat, scaleY: CGFloat(1.0), xValue: view.chart.data!.xMax, yValue: Double(view.chart.center.y), axis: BridgeUtils.parseAxisDependency(axisDependency as String))
     }
   }
 

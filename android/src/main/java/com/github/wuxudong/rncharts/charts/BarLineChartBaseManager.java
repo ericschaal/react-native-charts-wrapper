@@ -106,7 +106,7 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
 
     }
 
-    @ReactProp(name= "dragOffset")
+    @ReactProp(name = "dragOffset")
     public void setDragOffset(T chart, boolean dragOffset) {
         if (dragOffset) {
             chart.setDragOffsetX(Utils.convertPixelsToDp(chart.getViewPortHandler().getChartWidth()) / 2);
@@ -293,10 +293,7 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
                 "fitScreen", FIT_SCREEN,
                 "highlights", HIGHLIGHTS,
                 "setDataAndLockIndex", SET_DATA_AND_LOCK_INDEX,
-                "zoomViewEnd", ZOOM_END
-        );
-
-        map.put("centerViewTo", CENTER_VIEW_TO);
+                "zoomViewEnd", ZOOM_END);
 
         if (commandsMap != null) {
             map.putAll(commandsMap);
@@ -341,7 +338,8 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
 
             case ZOOM_END:
                 float scaleAmount = (float) args.getDouble(0);
-                root.zoom(scaleAmount, 0, root.getData().getXMax(), root.getCenter().y, args.getString(1).equalsIgnoreCase("right") ? YAxis.AxisDependency.RIGHT : YAxis.AxisDependency.LEFT);
+                root.zoom(scaleAmount, 0, root.getData().getXMax()-60, root.getCenter().y, args.getString(1).equalsIgnoreCase("right") ? YAxis.AxisDependency.RIGHT : YAxis.AxisDependency.LEFT);
+
         }
 
         super.receiveCommand(root, commandId, args);

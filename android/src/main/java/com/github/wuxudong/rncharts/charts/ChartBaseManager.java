@@ -8,8 +8,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.animation.Easing.EasingFunction;
+import com.github.mikephil.charting.animation.Easing.EasingOption;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -212,8 +211,8 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
     public void setAnimation(Chart chart, ReadableMap propMap) {
         Integer durationX = null;
         Integer durationY = null;
-        EasingFunction easingX = Easing.Linear;
-        EasingFunction easingY = Easing.Linear;
+        EasingOption easingX = EasingOption.Linear;
+        EasingOption easingY = EasingOption.Linear;
 
         if (BridgeUtils.validate(propMap, ReadableType.Number, "durationX")) {
             durationX = propMap.getInt("durationX");
@@ -222,10 +221,10 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
             durationY = propMap.getInt("durationY");
         }
         if (BridgeUtils.validate(propMap, ReadableType.String, "easingX")) {
-            easingX = Easing.Linear; //EasingOption.valueOf(propMap.getString("easingX"));
+            easingX = EasingOption.valueOf(propMap.getString("easingX"));
         }
         if (BridgeUtils.validate(propMap, ReadableType.String, "easingY")) {
-            easingY = Easing.Linear; //EasingOption.valueOf(propMap.getString("easingY"));
+            easingY = EasingOption.valueOf(propMap.getString("easingY"));
         }
 
         if (durationX != null && durationY != null) {
