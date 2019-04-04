@@ -21,6 +21,7 @@ public class DateFormatter implements IAxisValueFormatter, IValueFormatter {
     private long since = 0;
 
     private TimeUnit timeUnit;
+    private SimpleDateFormat dateFormat;
 
     public DateFormatter(String pattern, long since, TimeUnit timeUnit) {
         //mFormat = new SimpleDateFormat(pattern, java.util.Locale.getDefault());
@@ -28,6 +29,7 @@ public class DateFormatter implements IAxisValueFormatter, IValueFormatter {
         this.since = since;
         this.pattern = pattern;
         this.timeUnit = timeUnit;
+        this.dateFormat = new SimpleDateFormat(pattern);
     }
 
     @Override
@@ -46,7 +48,7 @@ public class DateFormatter implements IAxisValueFormatter, IValueFormatter {
         } else if ( pattern == "hh.mm") {
             return DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date(since + timeUnit.toMillis(span)));
         } else {
-            return DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date(since + timeUnit.toMillis(span)));
+            return this.dateFormat.format(new Date(since + timeUnit.toMillis(span)));
         }
     }
 }
