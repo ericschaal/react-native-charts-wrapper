@@ -17,7 +17,7 @@ RCT_EXPORT_VIEW_PROPERTY(chartBackgroundColor, NSInteger) \
 RCT_EXPORT_VIEW_PROPERTY(chartDescription, NSDictionary) \
 RCT_EXPORT_VIEW_PROPERTY(noDataText, NSString) \
 RCT_EXPORT_VIEW_PROPERTY(touchEnabled, BOOL) \
-RCT_EXPORT_VIEW_PROPERTY(dragOffset, BOOL) \
+RCT_EXPORT_VIEW_PROPERTY(dragOffset, CGFloat) \
 RCT_EXPORT_VIEW_PROPERTY(highlightPerTapEnabled, BOOL) \
 RCT_EXPORT_VIEW_PROPERTY(dragDecelerationEnabled, BOOL) \
 RCT_EXPORT_VIEW_PROPERTY(dragDecelerationFrictionCoef, NSNumber) \
