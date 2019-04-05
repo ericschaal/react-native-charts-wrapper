@@ -291,6 +291,8 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
                 "setDataAndLockIndex", SET_DATA_AND_LOCK_INDEX,
                 "zoomViewEnd", ZOOM_END);
 
+        map.put("centerViewToAnimated", CENTER_VIEW_TO_ANIMATED);
+
         if (commandsMap != null) {
             map.putAll(commandsMap);
         }
