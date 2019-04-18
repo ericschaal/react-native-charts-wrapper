@@ -1,12 +1,17 @@
 package com.github.wuxudong.rncharts.charts;
 
 import android.graphics.RectF;
+import android.util.Log;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.YAxis;
@@ -16,8 +21,8 @@ import com.github.mikephil.charting.listener.BarLineChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.github.wuxudong.rncharts.listener.RNOnChartGestureListener;
 import com.github.wuxudong.rncharts.utils.BridgeUtils;
 
@@ -292,6 +297,7 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
                 "zoomViewEnd", ZOOM_END);
 
         map.put("centerViewToAnimated", CENTER_VIEW_TO_ANIMATED);
+        map.put("requestChartCenter", REQUEST_CHART_CENTER);
 
         if (commandsMap != null) {
             map.putAll(commandsMap);
@@ -337,10 +343,45 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
             case ZOOM_END:
                 float scaleAmount = (float) args.getDouble(0);
                 root.zoom(scaleAmount, 0, root.getData().getXMax()-60, root.getCenter().y, args.getString(1).equalsIgnoreCase("right") ? YAxis.AxisDependency.RIGHT : YAxis.AxisDependency.LEFT);
+                return;
+
+            case REQUEST_CHART_CENTER:
+                requestChartCenter(root);
+                return;
 
         }
 
         super.receiveCommand(root, commandId, args);
+    }
+
+
+
+    private void requestChartCenter(T chart) {
+        if (chart != null) {
+
+            WritableMap event = Arguments.createMap();
+            event.putString("action", "chartCenter");
+
+            ViewPortHandler viewPortHandler = chart.getViewPortHandler();
+
+            MPPointD center = chart.getValuesByTouchPoint(viewPortHandler.getContentCenter().getX(), viewPortHandler.getContentCenter().getY(), YAxis.AxisDependency.LEFT);
+            event.putDouble("centerX", center.x);
+            event.putDouble("centerY", center.y);
+
+            MPPointD leftBottom = (chart).getValuesByTouchPoint(viewPortHandler.contentLeft(), viewPortHandler.contentBottom(), YAxis.AxisDependency.LEFT);
+            MPPointD rightTop = (chart).getValuesByTouchPoint(viewPortHandler.contentRight(), viewPortHandler.contentTop(), YAxis.AxisDependency.LEFT);
+
+            event.putDouble("left", leftBottom.x);
+            event.putDouble("bottom", leftBottom.y);
+            event.putDouble("right", rightTop.x);
+            event.putDouble("top", rightTop.y);
+
+            ReactContext reactContext = (ReactContext) chart.getContext();
+            reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                    chart.getId(),
+                    "topChange",
+                    event);
+        }
     }
 
     private void setDataAndLockIndex(T root, ReadableMap map) {

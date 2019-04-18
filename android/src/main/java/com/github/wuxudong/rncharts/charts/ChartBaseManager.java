@@ -45,6 +45,7 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
 
     protected static final int SET_DATA_AND_LOCK_INDEX = 9;
     protected static final int ZOOM_END = 10;
+    protected static final int REQUEST_CHART_CENTER = 11;
 
     abstract DataExtract getDataExtract();
 
