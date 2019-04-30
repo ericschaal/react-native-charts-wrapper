@@ -15,11 +15,7 @@ import java.util.concurrent.TimeUnit;
  * Created by dougl on 05/09/2017.
  */
 public class DateFormatter implements IAxisValueFormatter, IValueFormatter {
-
-    private String pattern;
-
     private long since = 0;
-
     private TimeUnit timeUnit;
     private SimpleDateFormat dateFormat;
 
@@ -27,7 +23,6 @@ public class DateFormatter implements IAxisValueFormatter, IValueFormatter {
         //mFormat = new SimpleDateFormat(pattern, java.util.Locale.getDefault());
 
         this.since = since;
-        this.pattern = pattern;
         this.timeUnit = timeUnit;
         this.dateFormat = new SimpleDateFormat(pattern);
     }
@@ -43,12 +38,6 @@ public class DateFormatter implements IAxisValueFormatter, IValueFormatter {
     }
 
     private String format(long span) {
-        if (pattern == "hh.mm.ss") {
-            return DateFormat.getTimeInstance(DateFormat.MEDIUM).format(new Date(since + timeUnit.toMillis(span)));
-        } else if ( pattern == "hh.mm") {
-            return DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date(since + timeUnit.toMillis(span)));
-        } else {
-            return this.dateFormat.format(new Date(since + timeUnit.toMillis(span)));
-        }
+        return this.dateFormat.format(new Date(since + timeUnit.toMillis(span)));
     }
 }
