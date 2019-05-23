@@ -13,10 +13,10 @@ class RNCombinedChartView: RNBarLineChartViewBase {
     override var chart: CombinedChartView {
         return _chart
     }
-
+    
     override var dataExtract: DataExtract {
         return _dataExtract
-    }
+    }    
 
 
   override func setData(_ data: NSDictionary) {
@@ -38,19 +38,20 @@ class RNCombinedChartView: RNBarLineChartViewBase {
 
         super.init(frame: frame)
 
-
         self._chart.delegate = self
         self.addSubview(_chart)
-
-      let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(chartViewLongPress(gesture:)))
-      gestureRecognizer.minimumPressDuration = 0.25;
-      self.addGestureRecognizer(gestureRecognizer);
-
-      self._chart.highlightFullBarEnabled = true;
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setDrawOrder(_ config: NSArray) {
+        var array : [Int] = []
+        for object in RCTConvert.nsStringArray(config) {
+            array.append(BridgeUtils.parseDrawOrder(object).rawValue)
+        }
+        _chart.drawOrder = array
     }
 
     func setDrawValueAboveBar(_ enabled: Bool) {
